@@ -27,6 +27,7 @@ CREATE TABLE USERS (
     user_password text NOT NULL,
     user_email text NOT NULL,
     user_address text[] NOT NULL,
+    user_profile_img bytea,
     orders int[]
 );
 
@@ -111,4 +112,3 @@ WHERE
     EXECUTE 'DELETE FROM USERS WHERE (user_id, user_password) = (''' || ui || ''',''' || up || ''')';
 END;
 $$;
-

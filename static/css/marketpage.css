@@ -1,0 +1,12 @@
+@import '../loginpage.css';
+
+
+html {
+    background-image: url('/static/img/marketbg.jpg');
+}
+
+
+
+@media screen and (min-width: 768px){
+
+}
