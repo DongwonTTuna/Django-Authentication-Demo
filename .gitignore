@@ -1,0 +1,7 @@
+node_modules
+tools
+__pycache__
+migrations
+images
+test.py
+resdata.txt

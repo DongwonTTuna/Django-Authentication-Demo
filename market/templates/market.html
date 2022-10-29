@@ -1,9 +1,22 @@
 {% extends 'marketbase.html' %}
-{% block title%} ライオンショップ {% endblock %}
+{% block title %} ライオンショップ {% endblock %}
 {% block content %}
-<div class="h-screen">
-    <div id="menu" class="button w-10 h-10">
-        <div class="backgr w-0"></div>
+<div class="h-screen flex items-center justify-center">
+    <div class="backgr h-[800px] w-[1000px] rounded-xl "> 
+
     </div>
+</div>
+{% endblock %}
+
+{% block menu %}
+<div class="backgr min-h-[400px] h-[400px] w-40 absolute top-0 bottom-0 my-auto right-0 rounded-xl flex items-center">
+    <ul class="flex justify-between flex-col h-full ml-4"> 
+        <li></li>
+        <li onclick="MenuClicked(0)" class="menuelem active">・ Games</li>
+        <li onclick="MenuClicked(1)" class="menuelem">・ Utils</li>
+        <li onclick="MenuClicked(2)" class="menuelem">・ SNS</li>
+        <li onclick="MenuClicked(3)" class="menuelem">・ Develops</li>
+        <li></li>
+    </ul>
 </div>
 {% endblock %}

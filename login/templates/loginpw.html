@@ -1,0 +1,43 @@
+{% extends 'loginbase.html' %} 
+{% block title %} ログイン | ライオンショップ {% endblock %}
+{% block content %}
+<div class="h-screen flex items-center justify-center">
+
+  <div class="relative h-[700px] w-[500px]"> 
+    <div class="backgr h-full w-full rounded-md"></div>
+    <div class="absolute top-4 h-full w-full flex flex-col items-center">
+      {% if imgsrc != None %}
+      <img src="data:image/jpeg;base64,{{imgsrc}}" class="w-52 h-52 rounded-full mt-16 mb-20"/>
+      <div class="flex flex-col gap-4 items-center">
+        <form method="post">
+          {% csrf_token %}
+
+          {{ form.non_field_errors }}
+          {% for field in form %}
+            <label for="{{ field.id_for_label }}" class="col-sm-4 col-form-label white">
+                <strong>{{ field.label_tag }}</strong>
+            </label>
+            <div class="col-sm-8">
+                {{ field }}
+                {{ field.errors }}
+            </div>
+      {% endfor %}
+      <p class="mt-5 text-center cursor-pointer">パスワードが分からない場合</p>
+      <button type="submit" class="block mx-auto p-4 mt-[100px] rounded-md bg-orange-300">確認</button>
+    </form>
+
+      
+      {% else %}
+      <div class="mt-52 "></div>
+      {% endif %}
+      
+
+      </div>
+      <div></div>
+
+    </div>
+  </div>
+
+
+</div>
+{% endblock %}
