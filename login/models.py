@@ -1,16 +1,5 @@
 from django.db import models
 
-# Create your models here.
-class Manager(models.Manager):
-
-    def get_django(self):
-        return self.get_queryset().filter(title__icontains="Django")
-
-    def get_vue(self):
-        return self.get_queryset().filter(title__icontains="Vue")
-
-    def get_model(self):
-        return self.model
     
 class CustomUser(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
@@ -24,5 +13,7 @@ class CustomUser(models.Model):
     isRemoved = models.BooleanField(default=False)
     
     objects = models.Manager()
+    all_entries = objects.all()
+    
     class Meta:
         verbose_name = 'Appstore User'

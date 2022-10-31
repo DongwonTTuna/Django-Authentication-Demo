@@ -1,10 +1,13 @@
+from uuid import uuid4
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views import generic
 from .forms import *
 from .models import CustomUser
 from urllib.parse import urlencode
-import psycopg,brotli, base64
+import brotli, base64, uuid
+
 # Create your views here.
 
 
@@ -22,16 +25,42 @@ class LoginPWView(generic.FormView):
     template_name: str = 'loginpw.html'
     form_class = LoginPWForm
     
+    def form_valid(self,form):
+        self.form = form
+        user = self.request.GET.get('u_id')
+        data = CustomUser.objects.filter(user_email=user)
+        inputedPassword = self.form.cleaned_data['password']
+        password = data.values()[0]["u_password"]
+        
+        if inputedPassword == password:
+            s_key = self.request.session.session_key
+            if s_key == None:
+                self.request.session['login'] = str(uuid.uuid4())
+                self.request.session['u_id'] = data.values()[0]["user_email"]
+                return HttpResponseRedirect(self.get_success_url())
+            else:
+                return HttpResponseRedirect(self.already_login_url())
+        else:
+            return HttpResponseRedirect(self.not_success_url())
+    
     def get_context_data(self,**kwargs):
         ctx = super().get_context_data(**kwargs)
         user = self.request.GET.get('u_id')
-        data = CustomUser(user_email=user)
-        with open('./resdata.txt','w') as f:
-            f.write(str(data.objects.all()))
-        #data = base64.b64encode(brotli.decompress(tempdata[0][0]))
-        
-        ctx.update(data)
+        data = CustomUser.objects.filter(user_email=user)
+        if data.count() == 0:
+            return ctx
+        imgpath = data.values()[0]["user_profile_img"]
+        data = ""
+        with open(imgpath, 'rb') as f:
+            data = base64.b64encode(brotli.decompress(f.read()))
+        ctx.update({'imgsrc': data.decode()})
         return ctx 
+    def get_success_url(self,**kwargs) -> str:
+        return reverse('marketmain')
+    def not_success_url(self,**kwargs) -> str:
+        return reverse('wrong_password')
+    def already_login_url(self,**kwargs) -> str:
+        return reverse('already_login')
     
     
 class RegisterView(generic.FormView):
@@ -51,6 +80,7 @@ class RegisterView(generic.FormView):
         im_io = BytesIO()
         extension = self.valid_extension(image.name)
         im.save(im_io, extension, optimize=True)
+        im_io = BytesIO(brotli.compress(im_io.getbuffer()))
         new_image = File(im_io, name="UserProfileImg."+extension.lower())
         return new_image
     

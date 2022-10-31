@@ -1,33 +1,40 @@
-{% extends 'loginbase.html' %} 
-{% block title %} サインアップ | ライオンショップ {% endblock %}
-{% block content %}
+{% extends 'loginbase.html' %} {% block title %} サインアップ | ライオンショップ
+{% endblock %} {% block content %}
 <div class="h-screen flex items-center justify-center">
-
-  <div class="relative h-[700px] w-[500px]"> 
+  <div class="relative h-[700px] w-[800px]">
     <div class="backgr h-full w-full rounded-md"></div>
-    <div class="absolute top-4 h-full w-full flex items-center justify-center">
-        <form method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-
-          {{ form.non_field_errors }}
-          {% for field in form %}
-            <label for="{{ field.id_for_label }}" class="col-sm-4 col-form-label white">
-                <strong>{{ field.label_tag }}</strong>
-            </label>
-            <div class="col-sm-8">
-                {{ field }}
-                {{ field.errors }}
-            </div>
-      {% endfor %}
-      <button type="submit" class="block mx-auto p-4 mt-[100px] rounded-md bg-orange-300">確認</button>
-        </form>
-      
-
+    <div class="absolute top-0 h-full w-full flex items-center justify-center">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %} {{ form.non_field_errors }}
+        <div class="flex items-center flex-col">
+            <table
+              class="text-center border-separate border-spacing-4 border-spacing-y-20 whitespace-nowrap"
+            >
+              <tr>
+                <td>{{form.email.label_tag}}</td>
+                <td>{{form.email}}</td>
+                <td>{{form.password.label_tag}}</td>
+                <td>{{form.password}}</td>
+              </tr>
+              <tr>
+                <td>{{form.name.label_tag}}</td>
+                <td>{{form.name}}</td>
+                <td>{{form.address.label_tag}}</td>
+                <td>{{form.address}}</td>
+              </tr>
+            </table>
+            <div>{{form.profile_img.label_tag}} </div>
+          <div>{{form.profile_img}}</div>
+        </div>
+        <button
+        type="submit"
+        class="block mx-auto p-4 mt-[60px] rounded-md bg-orange-300"
+      >
+        確認
+      </button>
+      </form>
       <div></div>
-
     </div>
   </div>
-
-
 </div>
 {% endblock %}
